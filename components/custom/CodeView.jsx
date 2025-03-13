@@ -15,7 +15,6 @@ import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useParams } from 'next/navigation';
 import { Loader2Icon } from 'lucide-react';
-import SandpackPreviewClient from './SandpackPreviewClient';
 
 function CodeView() {
     const {id} = useParams()
@@ -90,7 +89,7 @@ function CodeView() {
                         <SandpackCodeEditor style={{ height: '80vh' }} />
                     </> :
                         <>
-                            <SandpackPreviewClient/>
+                            <SandpackPreview ref={previewRef} style={{ height: '80vh' }} showNavigator={true} />
                         </>}
                 </SandpackLayout>
             </SandpackProvider>
