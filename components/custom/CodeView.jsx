@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useContext, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState, useRef } from 'react'
 import {
     SandpackProvider,
     SandpackLayout,
@@ -40,14 +40,18 @@ function CodeView() {
         setLoading(false)
     }
 
-    useEffect(() => {
-        if (messages?.length > 0) {
-            const role = messages[messages?.length - 1].role
-            if (role === 'user') {
-                GenerateAiCode()
-            }
+  const isGenerating = useRef(false);
+
+useEffect(() => {
+    if (messages?.length > 0) {
+        const role = messages[messages.length - 1].role;
+        if (role === 'user' && !isGenerating.current) {
+            isGenerating.current = true;
+            GenerateAiCode().finally(() => (isGenerating.current = false));
         }
-    }, [messages])
+    }
+}, [messages]);
+
 
 const GenerateAiCode = async () => {
     try {
