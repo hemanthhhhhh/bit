@@ -49,23 +49,28 @@ function CodeView() {
         }
     }, [messages])
 
-    const GenerateAiCode = async() => {
-        setLoading(true)
-        const PROMPT=JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT;
-        const result=await axios.post('/api/gen-ai-code',{
-        prompt:PROMPT
-        });
-        //console.log(result.data);
-        const aiResp=result.data;
-        
-        const mergedFiles={...Lookup.DEFAULT_FILE,...aiResp?.files}
+const GenerateAiCode = async () => {
+    try {
+        setLoading(true);
+        const PROMPT = JSON.stringify(messages) + " " + Prompt.CODE_GEN_PROMPT;
+        const result = await axios.post('/api/gen-ai-code', { prompt: PROMPT });
+
+        if (!result?.data) throw new Error("No response from AI API");
+
+        const aiResp = result.data;
+        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp?.files };
         setFiles(mergedFiles);
+
         await UpdateFiles({
             workspaceId: id,
-            files: aiResp?.files
-        })
-        setLoading(false)
+            files: aiResp?.files,
+        });
+    } catch (error) {
+        console.error("Error generating AI code:", error);
+    } finally {
+        setLoading(false);
     }
+};
 
     return (
         <div className='relative'>
