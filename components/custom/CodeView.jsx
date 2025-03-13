@@ -98,7 +98,7 @@ const GenerateAiCode = async () => {
                         <SandpackCodeEditor style={{ height: '80vh' }} />
                     </> :
                         <>
-                            <SandpackPreview ref={previewRef} style={{ height: '80vh' }} showNavigator={true} />
+                            <SandpackPreview  style={{ height: '80vh' }} showNavigator={true} />
                         </>}
                 </SandpackLayout>
             </SandpackProvider>
