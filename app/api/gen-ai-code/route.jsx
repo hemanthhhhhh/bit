@@ -10,6 +10,6 @@ export async function POST(req) {
 
         return NextResponse.json(JSON.parse(res))
     } catch(e) {
-        return NextResponse.json({error:res})
+        return NextResponse.json({error:e.message})
     }
 }
